@@ -1,5 +1,5 @@
 # V2X_SJTU
-## Inroduction
+## Introduction
 A repository of basic codes and usage instructions for [Mokar V2X devices](https://www.huali-tec.com/project.php). The project is sponsored by Shanghai Jiaotong University.
 
 Here are some introductions and tutorials for the V2X device. Honestly speaking, I 'm just a beginner in this field. My document and tutorial contain only some basic ways to code & run programs on the V2X device.
@@ -12,6 +12,8 @@ Here are some introductions and tutorials for the V2X device. Honestly speaking,
 5. Samples
 6. Coding
 7. TCP Communication
+8. Other Problems
+9. Contact
 
 ## 1.Description
 Folder tree:  
@@ -38,26 +40,87 @@ To clone the codes from Github
 `$ cd /your_own_work_space`  
 `$ git clone https://github.com/Fantasticos/V2X_SJTU.git`  
 
-Install *arm-linux-gnueabihf* cross compiler  
+**Install *arm-linux-gnueabihf* cross compiler**  
+
 Download [compiler](https://pan.baidu.com/s/1o6HW8bS#list/path=%2Fshare)  
+
 Move *.tar* to `/opt`  
+
 Extract  
 `$ tar  -xvf gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux.tar`  
+
 Modify profile  
 `$ cd /etc`  
 `$ sudo gedit profile`  
 add `export PATH=$PATH:/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux/bin`  
 `$ sudo gedit ~/.bashrc`  
 add `source /etc/profile`  
+
 reboot the terminal  
 
 ## 3. Hardware Connection
 Refer to the handbook
-If you want to connect by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip 192.168.10.1  
-If you want to connect through Ethernet, change your local ip to be 192.168.253.1 and wire-connect directly to the Mokar device, or through a switch. Default device ip 192.168.253.10
+If you want to connect by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip address 192.168.10.1  
+If you want to connect through Ethernet, change your local ip address to be 192.168.253.1 and wire-connect directly to the Mokar device, or through a switch. Default device ip address 192.168.253.10
 
 ## 4. Before Communication
+Suppose you connect through a wire, so the ip address of V2X device is 192.168.253.10. If you connect wirelessly, just replace the ip with 192.168.10.1  
+
+Before you test the communicaiton, you have to upload the essential libraries.
+
+```
+$ cd mde/mocar/libs  
+$ scp libmocarv2x.so root@192.168.253.10:/usr/lib/  
+$ scp base/libasnhl.so root@192.168.253.10:/usr/lib/  
+$ scp base/libosstoed.so root@192.168.253.10:/usr/lib/  
+$ scp base/libLLC.so root@192.168.253.10:/usr/lib/  
+$ scp base/libstack.so root@192.168.253.10:/usr/lib/  
+$ scp base/libsmartway.so root@192.168.253.10:/usr/lib/  
+$ scp ../samples/mocar_log.conf  root@192.168.253.10:/usr/local  
+```
+
+  **PASSWORD:** hL2017.moKar  
 
 ## 5. Run Samples
+The sample codes are in `mocar/samples`, you can compile the sample under `mocar/build`  
+
+```
+$ cd mde/mocar/build
+$ make
+```
+Upload the sample app to the v2x device, take **bsm** for example  
+
+```
+$ cd ../bin
+$ scp bsm root@192.168.253.10:/var
+```
+Open a new terminal, log into the device through SSH  
+
+`$ ssh -l root 192.168.253.10`  
+  **PASSWORD:** hL2017.moKar  
+
+Enter `/var` and run the sample app
+
+`# cd /var`  
+`# ./bsm`
+
+If warn `undefined symbol: mde_stack_init`, just remove `usr/local` and upload the .conf file again.
+`# rm -rf /usr/local/*`  
+`$ scp ../samples/mocar_log.conf  root@192.168.253.10:/usr/local`  
+
+Now you can see the device sending bsm message at 10 HZ.  
+
+You can repeat this process and upload program to another Mokar device, run the same `./bsm`, you can definitely see the two device communicating!!!
+
 ## 6. Coding
-## 7. TCP Communication
+The coding work now take place in `mocar/samples`  
+Two example are provided, *lidar_send* and *lidar_recv*. I wrote these two program for my graduation project. They combine TCP communication and BSM message sending and recving.  
+To generate your own code, I suggest you to copy one sample, like **bsm**, copy the folder and rename the folder. Also remember to replace the code file name and the name in makefile.   
+
+Now you can add any funcion you like!!!  
+
+## 8. Other Problems
+Still collecting.  
+
+## 9. Contact
+If you have any questions, feel free to email me. My email address is zhongyuanliu233@163.com
