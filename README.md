@@ -119,6 +119,18 @@ To generate your own code, I suggest you to copy one sample, like **bsm**, copy 
 
 Now you can add any funcion you like!!!  
 
+## 7. TCP Communicaiton
+
+The communication between computer and V2X device is done by TCP.  
+In **TCP_Scripts**, programs include *client* and *server*, client runs on the computer and server runs on the device.  
+
+In my project, the tcp server is merged into `samples/lidar_send` and `samples/lidar_recv`  
+
+To test, you can upload *lidar_send* or *lidar_recv* to the device, then move to `test_tcp_3`,run  
+`$ ./client 192.168.253.10`  
+
+or you can replace the ip address with 192.168.10.1 if connected through Wifi  
+
 ## 8. Other Problems
 Still collecting.  
 
