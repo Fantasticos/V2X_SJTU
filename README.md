@@ -36,12 +36,28 @@ Folder tree:
 ## 2. Installation
 To clone the codes from Github  
 `$ cd /your_own_work_space`  
-`$ git clone https://github.com/Fantasticos/V2X_SJTU.git`
+`$ git clone https://github.com/Fantasticos/V2X_SJTU.git`  
 
-https://pan.baidu.com/s/1o6HW8bS#list/path=%2Fshare
+Install *arm-linux-gnueabihf* cross compiler  
+Download [compiler](https://pan.baidu.com/s/1o6HW8bS#list/path=%2Fshare)  
+Move *.tar* to `/opt`  
+Extract  
+`$ tar  -xvf gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux.tar`  
+Modify profile  
+`$ cd /etc`  
+`$ sudo gedit profile`  
+add `export PATH=$PATH:/opt/gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux/bin`  
+`$ sudo gedit ~/.bashrc`  
+add `source /etc/profile`  
+reboot the terminal  
 
 ## 3. Hardware Connection
+Refer to the handbook
+If you want to connect by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip 192.168.10.1  
+If you want to connect through Ethernet, change your local ip to be 192.168.253.1 and wire-connect directly to the Mokar device, or through a switch. Default device ip 192.168.253.10
+
 ## 4. Before Communication
+
 ## 5. Run Samples
 ## 6. Coding
 ## 7. TCP Communication
