@@ -66,6 +66,9 @@ If you want to connect through Ethernet, change your local ip address to be 192.
 ## 4. Before Communication
 Suppose you connect through a wire, so the ip address of V2X device is 192.168.253.10. If you connect wirelessly, just replace the ip with 192.168.10.1  
 
+**IMPORTANT**   
+You should change your ip address according to your target address. For example, if you want to connect to 192.168.253.10 with Ethernet, you have to change your own ipv4 address to be 192.168.253.x, x can be replaced by any integer from 0 to 255 except 10 (you cannot set your ip to be identical with your device's)
+
 Before you test the communicaiton, you have to upload the essential libraries.
 
 ```
@@ -124,7 +127,7 @@ Now you can add any funcion you like!!!
 The communication between computer and V2X device is done by TCP.  
 In **TCP_Scripts**, programs include *client* and *server*, client runs on the computer and server runs on the device.  
 
-In my project, the tcp server is merged into `samples/lidar_send` and `samples/lidar_recv`  
+In my project, the tcp server is merged into `samples/lidar_send` and `samples/lidar_recv`. *lidar_send* is for the Road Side Device, while *lidar_recv* is for the On Board device  
 
 To test, you can upload *lidar_send* or *lidar_recv* to the device, then move to `test_tcp_3`,run  
 `$ ./client 192.168.253.10`  
@@ -132,7 +135,19 @@ To test, you can upload *lidar_send* or *lidar_recv* to the device, then move to
 or you can replace the ip address with 192.168.10.1 if connected through Wifi  
 
 ## 8. Other Problems
-Still collecting.  
+**Synchronization of clock**  
+
+To make sure that the clock are at the same pace, I use NTP to synchronize it.  
+
+The NTP server should be installed on your own computer, you can google it yourself, there are plenty of tutorials.  
+
+The problem is that the compilation of NTP client in the device is difficult because it use gcc-linaro-arm-linux-gnueabihf to compile files. To make this step easy, I compiled the client on my computer and just share the executable
+
+`$ cd NTP/ntpclient-2015`  
+`$ scp ntpclient root@192.168.253.10:/var`
+
+If you have finished the construction of NTP server on your own computer, you can run the following code on the device, and you can see your clock synchronized.  
+`./ntpclient -s -d -c 1 -i 5 -h 192.168.253.1`  
 
 ## 9. Contact
 If you have any questions, feel free to email me. My email address is zhongyuanliu233@163.com
