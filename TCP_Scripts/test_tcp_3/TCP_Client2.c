@@ -69,9 +69,9 @@ int main(int argc, char *argv[])
 
       client_sec=client_time_send/1000000;
       client_usec=client_time_send-1000000*(client_time_send/1000000);
-      printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
+      //printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
       //send message together with time stamp
-      angle++;
+      //angle++;
       char sendBuf[100];
       sprintf(sendBuf, "%f,%ld,%ld",angle,client_sec,client_usec);
       if((num=send(sockfd,sendBuf,strlen(sendBuf)+1,0))==-1){
@@ -99,20 +99,21 @@ int main(int argc, char *argv[])
       if (count_calibr==0)
       {
       dtime=(2*server_time-client_time_recv-client_time_send)/2;//calculate the time difference between the two device
+      printf("%ld\n",dtime);
       count_calibr=1;
       }
       else
       {
           printf("received lidar time is : %ld.%ld\n",server_sec,server_usec);
           commu_delay=client_time_recv-server_time+dtime;
-          printf("Client_time= %ld",client_time_recv+dtime);
+          printf("Client_time= %ld\n",client_time_recv+dtime);
           printf("delay is %ld\n",commu_delay);
       }
 
 
 
 
-      sleep(1);
+      usleep(100000);
     }
 
     close(sockfd);

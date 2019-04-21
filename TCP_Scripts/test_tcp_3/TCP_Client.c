@@ -65,11 +65,12 @@ int main(int argc, char *argv[])
       //Set the time stamp
       gettimeofday(&tv, NULL);
       client_time_send=tv.tv_sec*1000000+tv.tv_usec+dtime;
+      //printf("%ld\n", client_time_send);
       client_sec=client_time_send/1000000;
       client_usec=client_time_send-1000000*(client_time_send/1000000);
-      //printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
+      printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
       //send message together with time stamp
-      latitude++;
+      //latitude++;
       char sendBuf[100];
       sprintf(sendBuf, "%f,%ld,%ld",latitude,client_sec,client_usec);
       if((num=send(sockfd,sendBuf,strlen(sendBuf)+1,0))==-1){
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
       server_usec = atoi(p);
       server_time = server_sec*1000000+server_usec;
       client_time_send=tv.tv_sec*1000000+tv.tv_usec;
-      if (count_calibr>=0)
+      if (count_calibr==0)
       {
       gettimeofday(&tv, NULL);
       client_time_recv=tv.tv_sec*1000000+tv.tv_usec;
@@ -105,7 +106,7 @@ int main(int argc, char *argv[])
 
 
 
-      sleep(1);
+      usleep(100000);
     }
 
     close(sockfd);

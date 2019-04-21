@@ -280,7 +280,7 @@ int main()
 					fprintf(stderr, "timer create failed\n");
 					return -1;
 			}
-			ret = v2x_set_timer(bsm_send_timer, 100);
+			ret = v2x_set_timer(bsm_send_timer, 50);
 			if(0 != ret)
 			{
 					fprintf(stderr, "timer set failed\n");
@@ -311,7 +311,7 @@ int main()
 					}
 					//send the angle back together with the time
 					char sendBuf[100];
-					if (count_calibr==0)
+					if (count_calibr == 0)
 					{
 						gettimeofday(&tv, NULL);
 						sprintf(sendBuf, "%f,%ld,%ld",angle_recv,tv.tv_sec,tv.tv_usec);
