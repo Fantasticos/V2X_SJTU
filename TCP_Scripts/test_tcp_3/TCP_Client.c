@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
       client_time_send=tv.tv_sec*1000000+tv.tv_usec+dtime;
       client_sec=client_time_send/1000000;
       client_usec=client_time_send-1000000*(client_time_send/1000000);
-      printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
+      //printf("Calibrated time now is %ld.%ld\n", client_sec,client_usec);
       //send message together with time stamp
       latitude++;
       char sendBuf[100];
@@ -98,9 +98,10 @@ int main(int argc, char *argv[])
       client_time_recv=tv.tv_sec*1000000+tv.tv_usec;
       dtime=(2*server_time-client_time_recv-client_time_send)/2;//calculate the time difference between the two device
       count_calibr=1;
+      printf("dtime is %ld\n", dtime);
       }
       else
-      printf("received vehicle time is : %ld.%ld\n",server_sec,server_usec);
+      //printf("received vehicle time is : %ld.%ld\n",server_sec,server_usec);
 
 
 
