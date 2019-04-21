@@ -311,7 +311,7 @@ int main()
 					}
 					//send the latitude back together with the time
 					char sendBuf[100];
-					if (count_calibr==0)
+					if (count_calibr>=0)
 					{
 						gettimeofday(&tv, NULL);
 						sprintf(sendBuf, "%f,%ld,%ld",latitude_recv,tv.tv_sec,tv.tv_usec);

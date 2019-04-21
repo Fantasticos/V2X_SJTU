@@ -92,15 +92,15 @@ int main(int argc, char *argv[])
       server_usec = atoi(p);
       server_time = server_sec*1000000+server_usec;
       client_time_send=tv.tv_sec*1000000+tv.tv_usec;
-      if (count_calibr==0)
+      if (count_calibr>=0)
       {
       gettimeofday(&tv, NULL);
       client_time_recv=tv.tv_sec*1000000+tv.tv_usec;
       dtime=(2*server_time-client_time_recv-client_time_send)/2;//calculate the time difference between the two device
       count_calibr=1;
-      printf("dtime is %ld\n", dtime);
+      printf("%ld\n", dtime);
       }
-      else
+      //else
       //printf("received vehicle time is : %ld.%ld\n",server_sec,server_usec);
 
 
