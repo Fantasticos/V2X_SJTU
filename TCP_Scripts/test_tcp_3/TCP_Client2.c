@@ -50,7 +50,10 @@ int main(int argc, char *argv[])
     double angle=1.1;
     struct timeval tv;
     long dtime=0;
-    double latitude_recv = 0;
+    double x_recv = 0;
+    double y_recv = 0;
+    double theta_recv = 0;
+    double vel_recv = 0;
     long server_sec = 0;
     long server_usec = 0;
     long server_time = 0;
@@ -87,7 +90,13 @@ int main(int argc, char *argv[])
       //decode the recived message
       char *p;
       p = strtok(buf, ",");
-      latitude_recv=strtod(p,NULL);
+      x_recv=strtod(p,NULL);
+      p = strtok(NULL, ",");
+      y_recv=strtod(p,NULL);
+      p = strtok(NULL, ",");
+      theta_recv=strtod(p,NULL);
+      p = strtok(NULL, ",");
+      vel_recv=strtod(p,NULL);
       p = strtok(NULL, ",");
       server_sec = atoi(p);
       p = strtok(NULL, ",");
@@ -104,7 +113,11 @@ int main(int argc, char *argv[])
       }
       else
       {
-          printf("received lidar time is : %ld.%ld\n",server_sec,server_usec);
+          printf("received lidar time is : %ld\n",server_time);
+          printf("received x is : %f\n",x_recv);
+          printf("received y is : %f\n",y_recv);
+          printf("received theta is : %f\n",theta_recv);
+          printf("received vel is : %f\n",vel_recv);
           commu_delay=client_time_recv-server_time+dtime;
           printf("Client_time= %ld\n",client_time_recv+dtime);
           printf("delay is %ld\n",commu_delay);

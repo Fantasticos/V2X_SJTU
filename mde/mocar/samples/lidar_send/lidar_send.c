@@ -22,8 +22,12 @@
 
 #define BACKLOG 1
 #define MAXRECVLEN 1024
-double	latitude_recv;
-double	angle_recv;
+double	x_recv;
+double  y_recv;
+double  vel_recv;
+double  theta_recv;
+
+double	angle_recv = 0;
 double  unixtime_send;
 double  unixtime_recv;
 //*********************TCP CODE END******************
@@ -162,11 +166,11 @@ int v2x_fill_bsm_msg(v2x_msg_bsm_t* usr_bsm)
 
     //usr_bsm->latitude  = 30.495527;
 		//test 20190328 zhongyuanliu
-		usr_bsm->latitude  = latitude_recv;
-    usr_bsm->longitude = 114.17543;
-    usr_bsm->heading   = 0;
+		usr_bsm->latitude  = x_recv;
+    usr_bsm->longitude = y_recv;
+    usr_bsm->heading   = theta_recv;
     usr_bsm->elevation = 100;
-    usr_bsm->speed     = 1 * 3.6;
+    usr_bsm->speed     = vel_recv * 3.6;
 
     return 0;
 }
@@ -192,15 +196,15 @@ void v2x_bsm_tx_handle(union sigval sig)
         return;
     }
 
-    fprintf(stderr, "txmsg-BSM: send msg successed, latitude %f, time %f\n", user_bsm.latitude, unixtime_send);
+    fprintf(stderr, "txmsg-BSM: send msg successed, x %f, time %f\n", user_bsm.latitude, unixtime_send);
 
 }
 
 void v2x_bsm_recv_handle(v2x_msg_bsm_t* user_bsm)
 {
-    fprintf(stderr, "rxmsg-BSM: recv msg successed, angle %f, time %f\n", user_bsm->angle, user_bsm->unix_time);
+    fprintf(stderr, "rxmsg-BSM: recv msg successed, angle %f\n", user_bsm->angle);
 		angle_recv=user_bsm->angle;
-		unixtime_recv=user_bsm->unix_time;
+		//unixtime_recv=user_bsm->unix_time;
 }
 
 int main()
@@ -295,13 +299,19 @@ int main()
 						//decode the recived message
 							char *p;
  							p = strtok(buf, ",");
-	 						latitude_recv=strtod(p,NULL);
-	 						p = strtok(NULL, ",");
-							long client_sec = atoi(p);
+	 						x_recv=strtod(p,NULL);
 							p = strtok(NULL, ",");
-							long client_usec = atoi(p);
-							printf("latitude is : %f\n", latitude_recv);
-							unixtime_send = (double)client_sec+((double)client_usec)/1000000;
+	 						y_recv=strtod(p,NULL);
+							p = strtok(NULL, ",");
+	 						theta_recv=strtod(p,NULL);
+							p = strtok(NULL, ",");
+	 						vel_recv=strtod(p,NULL);
+	 						p = strtok(NULL, ",");
+							long time_sec_recv = atoi(p);
+							p = strtok(NULL, ",");
+							long time_usec_recv = atoi(p);
+							//printf("latitude is : %f\n", latitude_recv);
+							unixtime_send = (double)time_sec_recv+((double)time_usec_recv)/1000000;
 
 				}
 					else

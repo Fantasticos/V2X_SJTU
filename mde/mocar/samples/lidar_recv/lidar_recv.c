@@ -22,7 +22,11 @@
 
 #define BACKLOG 1
 #define MAXRECVLEN 1024
-double	latitude_recv;
+double	x_recv;
+double  y_recv;
+double  vel_recv;
+double  theta_recv;
+
 double	angle_recv;
 double  unixtime_send;
 double  unixtime_recv;
@@ -89,7 +93,7 @@ int v2x_fill_bsm_msg(v2x_msg_bsm_t* usr_bsm)
     msgcount++;
 
     usr_bsm->temp_id          = id;
-    usr_bsm->unix_time        = unixtime_send;
+    usr_bsm->unix_time        = 0;
     usr_bsm->vehicletype      = 4;
     usr_bsm->sve_evdsc_extent = 4;
 
@@ -198,8 +202,11 @@ void v2x_bsm_tx_handle(union sigval sig)
 
 void v2x_bsm_recv_handle(v2x_msg_bsm_t* user_bsm)
 {
-    fprintf(stderr, "rxmsg-BSM: recv msg successed, latitude %f, time %f\n", user_bsm->latitude, user_bsm->unix_time);
-		latitude_recv=user_bsm->latitude;
+    fprintf(stderr, "rxmsg-BSM: recv msg successed, x %f, time %f\n", user_bsm->latitude, user_bsm->unix_time);
+		x_recv=user_bsm->latitude;
+		y_recv=user_bsm->longitude;
+		theta_recv=user_bsm->heading;
+		vel_recv=user_bsm->speed;
 		unixtime_recv=user_bsm->unix_time;
 }
 
@@ -314,14 +321,14 @@ int main()
 					if (count_calibr==0)
 					{
 						gettimeofday(&tv, NULL);
-						sprintf(sendBuf, "%f,%ld,%ld",latitude_recv,tv.tv_sec,tv.tv_usec);
+						sprintf(sendBuf, "%f,%f,%f,%f,%ld,%ld",x_recv,y_recv,theta_recv,vel_recv,tv.tv_sec,tv.tv_usec);
 										/* print client's ip and port */
 						send(connectfd, sendBuf,strlen(sendBuf)+1, 0);
 						count_calibr=1;
 					}
 					else
 					{
-						sprintf(sendBuf, "%f,%ld,%ld",latitude_recv,(long)unixtime_recv,(long)((unixtime_recv-(long)unixtime_recv)*1000000));
+						sprintf(sendBuf, "%f,%f,%f,%f,%ld,%ld",x_recv,y_recv,theta_recv,vel_recv,(long)unixtime_recv,(long)((unixtime_recv-(long)unixtime_recv)*1000000));
 										/* print client's ip and port */
 						send(connectfd, sendBuf,strlen(sendBuf)+1, 0);
 
