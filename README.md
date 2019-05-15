@@ -2,8 +2,9 @@
 ## Introduction
 A repository of basic codes and usage instructions for [Mokar V2X devices](https://www.huali-tec.com/project.php). The project is sponsored by Shanghai Jiaotong University.
 
-Here are some introductions and tutorials for the V2X device. Honestly speaking, I 'm just a beginner in this field. My document and tutorial contain only some basic ways to code & run programs on the V2X device.
-**Instruction for symbols**  
+Here are some introductions and tutorials for the V2X device. Honestly speaking, I 'm just a beginner in this field. My document and tutorial contain only some basic ways to code & run programs on the V2X device.  
+
+**Instruction about Symbols**  
 In this instruction, all the linux commands with "$" should be run on your own computer, and the orders with "#" should be run on device.
 
 ## Content
@@ -43,6 +44,8 @@ Folder tree:
 
 ***mde*** is a developing kit provided and copyrighted by Mokar Technology.  
 ***TCP_Scripts*** contains some simple programs and their codes for socket TCP communication between **computer** and **Mokar V2X devices**.  
+***lidar_ros*** is a ros package sending messages to road side devices  
+***NTP*** is a software for clock synchronization
 
 ## 2. Installation
 To clone the codes from Github  
@@ -131,9 +134,9 @@ If warn `undefined symbol: mde_stack_init`, just remove `usr/local` and upload t
 
 Now you can see the device sending bsm message at 10 HZ.  
 
-You can repeat this process and upload program to another Mokar device, run the same `./bsm`, you can definitely see the two device communicating!!!
+You can repeat this process and upload program to another Mokar device, run the same `./bsm`, you can definitely see the two device communicating!!!  
 
-  **If you want to change the IP of device**
+  **If you want to change the IP of device**  
 `# vi /etc/network/interfaces`  
 change the address
 
