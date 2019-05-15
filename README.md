@@ -45,7 +45,7 @@ To clone the codes from Github
 Download [compiler](https://pan.baidu.com/s/1o6HW8bS#list/path=%2Fshare)  
 
 Move *.tar* to `/opt`
-`sudo mv gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux/ /opt`  
+`$ sudo mv gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux/ /opt`  
 
 Extract  
 `$ tar  -xvf gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux.tar`  
@@ -60,7 +60,7 @@ add `source /etc/profile`
 reboot the terminal  
 
 ## 3. Hardware Connection
-Refer to the handbook for hardware wire connection
+Refer to the handbook provided by Huali for hardware wire connection instruction
 
 If you want to connect your computer and v2x device by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip address 192.168.10.1  
 
@@ -68,7 +68,7 @@ If you want to connect through Ethernet, change your local ip address to be 192.
 
 
 ## 4. Before Communication
-Suppose you connect through a wire, so the ip address of V2X device is 192.168.253.10. If you connect wirelessly, just replace the ip with 192.168.10.1  
+Suppose you connect through a wire, the ip address of V2X device will be 192.168.253.10. If you connect wirelessly, just replace the ip with 192.168.10.1  
 
 **IMPORTANT**   
 You should change your ip address according to your target address. For example, if you want to connect to 192.168.253.10 with Ethernet, you have to change your own ipv4 address to be 192.168.253.x, x can be replaced by any integer from 0 to 255 except 10 (you cannot set your ip to be identical with your device's)
@@ -106,10 +106,6 @@ Open a new terminal, log into the device through SSH
 `$ ssh -l root 192.168.253.10`  
   **PASSWORD:** hL2017.moKar  
 
-  **If you want to change the IP of device**
-`vi /etc/network/interfaces`  
-change the address
-
 Enter `/var` and run the sample app
 
 `# cd /var`  
@@ -123,12 +119,16 @@ Now you can see the device sending bsm message at 10 HZ.
 
 You can repeat this process and upload program to another Mokar device, run the same `./bsm`, you can definitely see the two device communicating!!!
 
+  **If you want to change the IP of device**
+`# vi /etc/network/interfaces`  
+change the address
+
 ## 6. Coding
-The coding work now take place in `mocar/samples`  
-Two example are provided, *lidar_send* and *lidar_recv*. I wrote these two program for my graduation project. They combine TCP communication and BSM message sending and recving.  
+The coding work now takes place in `mocar/samples`  
+Two example are provided, *lidar_send* and *lidar_recv*. I wrote these two program for my graduation project. They combine both TCP communication and BSM message.  
 To generate your own code, I suggest you to copy one sample, like **bsm**, copy the folder and rename the folder. Also remember to replace the code file name and the name in makefile.   
 
-Now you can add any funcion you like!!!  
+Now you can write any funcion in c++ you like!!!  
 
 ## 7. TCP Communicaiton
 
@@ -149,12 +149,13 @@ To make sure that the clock are at the same pace, I use NTP to synchronize it.
 
 The NTP server should be installed on your own computer, you can google it yourself, there are plenty of tutorials.  
 
-The problem is that the compilation of NTP client in the device is difficult because it use gcc-linaro-arm-linux-gnueabihf to compile files. To make this step easy, I compiled the client on my computer and just share the executable
+The problem is that the compilation of NTP client in the device is extremely trouble some because it use gcc-linaro-arm-linux-gnueabihf. To make it easy, I compiled the client on my computer and just share the executable.  
+
 
 `$ cd NTP/ntpclient-2015`  
 `$ scp ntpclient root@192.168.253.10:/var`
 
-If you have finished the construction of NTP server on your own computer, you can run the following code on the device, and you can see your clock synchronized.  
+If you have established NTP server on your own computer, you can run the following code on the device, and you can see your clock synchronized.  
 `./ntpclient -s -d -c 1 -i 5 -h 192.168.253.1`  
 
 ## 9. Contact
