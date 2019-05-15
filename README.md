@@ -44,7 +44,8 @@ To clone the codes from Github
 
 Download [compiler](https://pan.baidu.com/s/1o6HW8bS#list/path=%2Fshare)  
 
-Move *.tar* to `/opt`  
+Move *.tar* to `/opt`
+`sudo mv gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux/ /opt`  
 
 Extract  
 `$ tar  -xvf gcc-linaro-arm-linux-gnueabihf-4.9-2014.07_linux.tar`  
@@ -59,9 +60,12 @@ add `source /etc/profile`
 reboot the terminal  
 
 ## 3. Hardware Connection
-Refer to the handbook
-If you want to connect by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip address 192.168.10.1  
+Refer to the handbook for hardware wire connection
+
+If you want to connect your computer and v2x device by Wifi, search for Wifi AP named "IMASTERXXXX", default device ip address 192.168.10.1  
+
 If you want to connect through Ethernet, change your local ip address to be 192.168.253.1 and wire-connect directly to the Mokar device, or through a switch. Default device ip address 192.168.253.10
+
 
 ## 4. Before Communication
 Suppose you connect through a wire, so the ip address of V2X device is 192.168.253.10. If you connect wirelessly, just replace the ip with 192.168.10.1  
@@ -101,6 +105,10 @@ Open a new terminal, log into the device through SSH
 
 `$ ssh -l root 192.168.253.10`  
   **PASSWORD:** hL2017.moKar  
+
+  **If you want to change the IP of device**
+`vi /etc/network/interfaces`  
+change the address
 
 Enter `/var` and run the sample app
 

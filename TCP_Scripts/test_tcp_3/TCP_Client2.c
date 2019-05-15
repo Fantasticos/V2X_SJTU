@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <math.h>
 #include <netdb.h>  /* netdb is necessary for struct hostent */
 
 #define PORT 4321   /* server port */
@@ -52,6 +53,8 @@ int main(int argc, char *argv[])
     long dtime=0;
     double x_recv = 0;
     double y_recv = 0;
+    double x_est = 0;
+    double y_est = 0;
     double theta_recv = 0;
     double vel_recv = 0;
     long server_sec = 0;
@@ -64,11 +67,23 @@ int main(int argc, char *argv[])
     int count_calibr=0;
     long commu_delay =0;
 
+    int tcp_freq = 10;
+    gettimeofday(&tv, NULL);
+    long last_time = tv.tv_sec*1000000+tv.tv_usec;
+    long curr_time = 0;
+    long tar_time = (tv.tv_sec+1)*1000000+60000;
+
     while (1)
     {
       //Set the time stamp
       gettimeofday(&tv, NULL);
-      client_time_send=tv.tv_sec*1000000+tv.tv_usec+dtime;
+      curr_time = tv.tv_sec*1000000+tv.tv_usec;
+      if (last_time<=tar_time&&curr_time>=tar_time)
+      {
+        tar_time+=1000000/tcp_freq;
+        last_time = curr_time;
+          printf("time now %ld",curr_time);
+      client_time_send=curr_time+dtime;
 
       client_sec=client_time_send/1000000;
       client_usec=client_time_send-1000000*(client_time_send/1000000);
@@ -113,22 +128,24 @@ int main(int argc, char *argv[])
       }
       else
       {
-          printf("received lidar time is : %ld\n",server_time);
-          printf("received x is : %f\n",x_recv);
-          printf("received y is : %f\n",y_recv);
+          commu_delay=client_time_recv-server_time+dtime;
+          x_est = x_recv + vel_recv*cos(theta_recv*3.1415/180) * commu_delay/1000000;
+          y_est = y_recv + vel_recv*sin(theta_recv*3.1415/180) * commu_delay/1000000;
+          //printf("received lidar time is : %ld\n",server_time);
+          printf("estimate x is : %f\n",x_est);
+          printf("estimate y is : %f\n",y_est);
           printf("received theta is : %f\n",theta_recv);
           printf("received vel is : %f\n",vel_recv);
-          commu_delay=client_time_recv-server_time+dtime;
-          printf("Client_time= %ld\n",client_time_recv+dtime);
+          //printf("Client_time= %ld\n",client_time_recv+dtime);
           printf("delay is %ld\n",commu_delay);
       }
 
 
 
 
-      usleep(100000);
     }
-
+          usleep(1000);
+    }
     close(sockfd);
     printf("tcp end");
     return 0;
