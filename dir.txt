@@ -13,28 +13,6 @@
 │       ├── license
 │       └── samples
 ├── NTP
-│   ├── ntp-4.2.8p13
-│   │   ├── adjtimed
-│   │   ├── clockstuff
-│   │   ├── conf
-│   │   ├── html
-│   │   ├── include
-│   │   ├── kernel
-│   │   ├── lib
-│   │   ├── libjsmn
-│   │   ├── libntp
-│   │   ├── libparse
-│   │   ├── ntpd
-│   │   ├── ntpdate
-│   │   ├── ntpdc
-│   │   ├── ntpq
-│   │   ├── ntpsnmpd
-│   │   ├── parseutil
-│   │   ├── ports
-│   │   ├── scripts
-│   │   ├── sntp
-│   │   ├── tests
-│   │   └── util
 │   └── ntpclient-2015
 └── TCP_Scripts
     ├── test_tcp_1
@@ -42,4 +20,4 @@
     ├── test_tcp_3
     └── test_tcp_3 (copy)
 
-42 directories
+20 directories
